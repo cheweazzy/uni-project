@@ -237,9 +237,6 @@ p.p2 {
     margin-bottom: 10px; /* Adjust the value to set the desired gap between links */
 }
 
-a:hover{
-    background-color: orangered;
-}
 
 @media(max-width:900px) {
 
@@ -260,6 +257,10 @@ a:hover{
 
 }
 
+td {
+    border: solid black 1px;
+    padding: 15px;
+}
 @media(max-width: 600px) {
     #top_nav {
         display: none;
