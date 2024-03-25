@@ -80,13 +80,56 @@
     div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
     .ui-dialog .ui-state-error { padding: .3em; }
     .validateTips { border: 1px solid transparent; padding: 0.3em; }
+
+    #temperature-slider,#humidity-slider,#air-quality-slider {
+      margin-right: 50px;
+    }
 </style>
+
+<script>
+  $(function() {
+    $("#temperature-slider").slider({
+        orientation: "vertical",
+        range: "min",
+        min: 15,
+        max: 25,
+        slide: function(event, ui) {
+            var value = ui.value;
+            var color = 'rgb(' + (value - 15) * 20 + ', 0, ' + (255 - (value - 15) * 20) + ')';
+            $(this).find('.ui-slider-range').css('background', color);
+        }
+    });
+
+    $("#humidity-slider").slider({
+        orientation: "vertical",
+        range: "min",
+        min: 0,
+        max: 100,
+        slide: function(event, ui) {
+            var value = ui.value;
+            var color = 'rgb(' + value * 2.55 + ', ' + value * 2.55 + ', 255)';
+            $(this).find('.ui-slider-range').css('background', color);
+        }
+    });
+
+    $("#air-quality-slider").slider({
+        orientation: "vertical",
+        range: "min",
+        min: 0,
+        max: 500,
+        slide: function(event, ui) {
+            var value = ui.value;
+            var color = 'rgb(' + value * 0.51 + ', ' + (255 - value * 0.51) + ', 0)';
+            $(this).find('.ui-slider-range').css('background', color);
+        }
+    });
+});
+
+</script>
 
 <script>
     $( function() {
       var dialog, form,
-   
-        // Regular expressions for validation
         nameRegex = /^[a-zA-Z\s]*$/,
         teamRegex = /^[a-zA-Z\s]*$/,
         positionRegex = /^[a-zA-Z\s]*$/,
@@ -95,8 +138,7 @@
         position = $( "#position" ),
         allFields = $( [] ).add( name ).add( team ).add( position ),
         tips = $( ".validateTips" );
-   
-      // Function to update tips for validation
+
       function updateTips( t ) {
         tips
           .text( t )
@@ -105,8 +147,7 @@
           tips.removeClass( "ui-state-highlight", 1500 );
         }, 500 );
       }
-   
-      // Function to check the length of input values
+
       function checkLength( o, n, min, max ) {
         if ( o.val().length > max || o.val().length < min ) {
           o.addClass( "ui-state-error" );
@@ -117,8 +158,7 @@
           return true;
         }
       }
-   
-      // Function to check the regular expressions for validation
+
       function checkRegexp( o, regexp, n ) {
         if ( !( regexp.test( o.val() ) ) ) {
           o.addClass( "ui-state-error" );
@@ -129,7 +169,6 @@
         }
       }
    
-      // Function to add a new NBA player to the table
       function addPlayer() {
         var valid = true;
         allFields.removeClass( "ui-state-error" );
@@ -153,7 +192,6 @@
         return valid;
       }
    
-      // Dialog initialization
       dialog = $( "#dialog-form" ).dialog({
         autoOpen: false,
         height: 400,
@@ -179,13 +217,11 @@
         }
       });
    
-      // Form submission handling
       form = dialog.find( "form" ).on( "submit", function( event ) {
         event.preventDefault();
         addPlayer();
       });
    
-      // Button click event to open the dialog
       $( "#create-user" ).button().on( "click", function() {
         dialog.dialog( "open" );
       });
@@ -218,21 +254,6 @@
 		}
 	  </style>
 
-	  <script>
-		$( function() {
-		  $( "#slider-vertical" ).slider({
-			orientation: "vertical",
-			range: "min",
-			min: 0,
-			max: 100,
-			value: 60,
-			slide: function( event, ui ) {
-			  $( "#amount" ).val( ui.value );
-			}
-		  });
-		  $( "#amount" ).val( $( "#slider-vertical" ).slider( "value" ) );
-		} );
-		</script>
 
 </head>
 
@@ -284,7 +305,6 @@
                 The latest basketball news, have access to different basketball statistics and history of the game
             </div>
             <div class="article_content" style="display: flex; flex-wrap: wrap;">
-                <!-- First Pair of Articles -->
                 <div class="article_pair" style="flex: 1 0 calc(50% - 20px); margin-right: 20px;">
                     <a href="https://sports.yahoo.com/lebron-james-flat-wrong-rewriting-170034921.html"><div class="first-news">
                         <img src="https://s.yimg.com/uu/api/res/1.2/am7g9bqJdckfA5ipqdYvCA--~B/Zmk9ZmlsbDtoPTUwNTtweW9mZj0wO3E9OTU7dz05MDA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2024-02/b64afeb0-d985-11ee-beff-da33e6df9f8a" alt="" style="height:250px; width: 100%; object-fit: cover;">
@@ -344,7 +364,6 @@
 										  <option>Center</option>
 										</select>
 									  </div>
-                                    <!-- Allow form submission with keyboard without duplicating the dialog button -->
                                     <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
                                   </fieldset>
                                 </form>
@@ -377,12 +396,27 @@
                         </div>
                       </div>
                     <h3>Section 2</h3>
-                    <div>
-                        <p>cos tam</p>
-                    </div>
+                    <div style="display:flex;flex-direction:row;">
+                      <img src="https://cdn-icons-png.flaticon.com/512/2530/2530064.png" alt="icon cold" height="30px" style="margin:10px;">
+                      <div id="temperature-slider" class="slider"></div>
+                      <img src="https://cdn-icons-png.flaticon.com/512/4273/4273937.png" alt="" height="30px" style="margin:10px;">
+                      <div id="humidity-slider" class="slider"></div>
+                      <img src="https://cdn-icons-png.freepik.com/512/8407/8407664.png" alt="" height="30px" style="margin:10px;">
+                      <div id="air-quality-slider" class="slider"></div>
+
+                   </div>
                     <h3>Section 3</h3>
-                    <div>
-                        <p>cos tam</p>
+                    <div class="gallery" style="display:inline-block;">
+                        <img src="/assets/images/1.jpg" alt="" height="250" width="48%">
+                        <img src="/assets/images/2.jpg" alt="" height="250" width="48%">
+                        <img src="/assets/images/3.jpg" alt="" height="250" width="48%">
+                        <img src="/assets/images/4.jpg" alt="" height="250" width="48%">
+                        <img src="/assets/images/5.jpg" alt="" height="250" width="48%">
+                        <img src="/assets/images/6.jpg" alt="" height="250" width="48%">
+                        <img src="/assets/images/7.jpg" alt="" height="250" width="48%">
+                        <img src="/assets/images/8.jpg" alt="" height="250" width="48%">
+                        <img src="/assets/images/9.jpg" alt="" height="250" width="48%">
+                        <img src="/assets/images/10.jpg" alt="" height="250" width="48%">
                     </div>
                     <h3>Section 4</h3>
                     <div>
@@ -421,6 +455,24 @@
         <div class="link_foot"><a href="" > About us </a></div> <div class="link_foot"><a href="" > More info </a></div>
     </div>  
 </div>
+
+
+<script>
+  document.querySelectorAll('.gallery > img').forEach(img => {
+  img.addEventListener('click', () => {
+    img.classList.toggle('active');
+  });
+});
+</script>
+
+<script>
+  document.querySelectorAll('.gallery > img').forEach(img => {
+  img.addEventListener('click', () => {
+    img.classList.toggle('active');
+  });
+});
+
+</script>
 
 </body>
 
